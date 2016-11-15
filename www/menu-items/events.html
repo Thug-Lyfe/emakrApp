@@ -1,7 +1,7 @@
 <ion-view view-title="Events">
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="e in events" ui-sref="activities({eventId:{{$index}}})">
+      <ion-item ng-repeat="e in getAll" ui-sref=".activities({eventIndex:{{$index}}})">
         {{e.name}}
       </ion-item>
     </ion-list>

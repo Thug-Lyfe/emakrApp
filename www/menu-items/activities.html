@@ -1,7 +1,7 @@
 <ion-view view-title="Activities">
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="act in event.activities" ui-sref="activity({actId:{{$index}}})">
+      <ion-item ng-repeat="act in getEvent" ui-sref="activity({actId:{{$index}}})">
         {{act.name}}
       </ion-item>
     </ion-list>
