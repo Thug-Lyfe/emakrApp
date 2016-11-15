@@ -71,7 +71,7 @@ var eventStash = [
     proximity: 50,
     participants:[{part:"id1"},{part:"id2"},{Part:"id3"}]
   }
-];;
+];
 var curEvent = 0;
 angular.module('starter.controllers', [])
   .factory('Projects', function() {
@@ -80,7 +80,10 @@ angular.module('starter.controllers', [])
         return eventStash
       },
       getEvent: function(eventIndex){
-        return eventStash[eventIndex].activities;
+        return eventStash[eventIndex];
+      },
+      getAct: function(eventIndex,actIndex){
+        return eventStash[eventIndex].activities[actIndex];
       },
       save: function(projects) {
         //eventStash = angular.toJson(projects);
@@ -93,11 +96,17 @@ angular.module('starter.controllers', [])
         };
       },
 
-      getLastActiveIndex: function() {
-        return parseInt(window.localStorage['lastActiveProject']) || 0;
+      getLastActiveEvent: function() {
+        return parseInt(window.localStorage['lastActiveEvent']) || 0;
       },
-      setLastActiveIndex: function(index) {
-        window.localStorage['lastActiveProject'] = index;
+      setLastActiveEvent: function(index) {
+        window.localStorage['lastActiveEvent'] = index;
+      },
+      getLastActiveAct: function() {
+        return parseInt(window.localStorage['lastActiveAct']) || 0;
+      },
+      setLastActiveAct: function(index) {
+        window.localStorage['lastActiveAct'] = index;
       }
     }
   })
@@ -105,11 +114,10 @@ angular.module('starter.controllers', [])
   .controller('AppCtrl', function($scope, $timeout, $ionicModal, Projects, $ionicSideMenuDelegate,$stateParams) {
 
 
-
-
-
       $scope.getAll = Projects.all();
-
+      $scope.setCur = function(index){
+        Projects.setLastActiveEvent(index);
+      }
       // $scope.getAct = function(){
       //   if(!$stateParams.eventId || !$stateParams.actId){
       //     return []
@@ -171,6 +179,15 @@ angular.module('starter.controllers', [])
     };
     */
   })
-  .controller('ActsCtrl', function($scope, $timeout, $ionicModal, Projects, $ionicSideMenuDelegate,$stateParams) {
-    $scope.getEvent = Projects.getEvent($stateParams.eventIndex);
+
+  .controller('eventCtrl', function($scope, $timeout, $ionicModal, Projects, $ionicSideMenuDelegate,$stateParams) {
+    $scope.getEvent = Projects.getEvent(Projects.getLastActiveEvent());
+    $scope.setAct = function() {
+      Projects.setLastActiveAct(index);
+    }
+
+    })
+  .controller('actCtrl', function($scope, $timeout, $ionicModal, Projects, $ionicSideMenuDelegate,$stateParams) {
+    $scope.getAct = Projects.getAct(Projects.getLastActiveEvent(),Projects.getLastActiveAct());
   })
+

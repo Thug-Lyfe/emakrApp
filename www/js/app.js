@@ -52,14 +52,14 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         }
       }
     })
-    .state('activities', {
-      url: '/activities/:eventIndex',
-      // views: {
-      //   'menuContent': {
-      templateUrl: 'menu-items/activities.html',
+    .state('app.event', {
+      url: '/event',
+      views: {
+         'menuContent': {
+      templateUrl: 'menu-items/event.html',
       controller:
-        'ActsCtrl'
-    // }}
+        'eventCtrl'
+         }}
 })
     //     function($scope,$stateParams){
     //     console.log($stateParams)
@@ -69,14 +69,14 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     //   }
     // }}})
     .state('app.activity',{
-      url:'/activity/:eventIndex/:actIndex',
+      url:'/activity',
       templateUrl: 'menu-items/activity.html',
-      controller: 'AppCtrl'
-      //   function($scope,$stateParams){
-      //   console.log($stateParams)
-      //   console.log(eventsStash[$stateParams.actId])
-      //   $scope.act = eventsStash[curEvent].activities[$stateParams.actId];
-      // }
+      views: {
+        'menuContent': {
+          templateUrl: 'menu-items/activity.html',
+          controller:
+            'actCtrl'
+        }}
     })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/events');
