@@ -1,5 +1,13 @@
 <ion-view view-title="{{getEvent.name}}">
+  <ion-floating-button click="myEvent()" has-footer="false" button-color="#2196F3" icon="ion-plus" icon-color="#fff">
+  </ion-floating-button>
   <ion-content>
+    <div class="card">
+      <div class="item item-text-wrap">
+        Name: {{getEvent.name}}
+        Description:
+      </div>
+    </div>
     <ion-list>
       <ion-item ng-repeat="act in getEvent.activities" ng-click="setCur($index)" href="#/app/activity"">
         {{act.name}}
