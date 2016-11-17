@@ -1,6 +1,5 @@
-<ion-view view-title="Events">
-  <ion-floating-button click="myEvent()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
-  </ion-floating-button>
+<ion-view view-title="Public Events">
+
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="e in getAll" ng-click="setCur($index)" href="#/app/event" ">

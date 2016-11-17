@@ -1,5 +1,6 @@
 <ion-view view-title="{{getEvent.name}}">
-
+  <ion-floating-button click="myEvent()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
+  </ion-floating-button>
   <ion-content>
     <div class="card">
       <div class="item item-text-wrap">
@@ -16,8 +17,8 @@
       </div>
     </div>
     <ion-list>
-      <ion-item ng-repeat="act in getEvent.activities" ng-click="setCur($index)" href="#/app/activity"">
-        {{act.name}}
+      <ion-item ng-repeat="act in getEvent.activities" ng-click="setCur($index)" href="#/app/myActivity"">
+      {{act.name}}
       </ion-item>
     </ion-list>
   </ion-content>

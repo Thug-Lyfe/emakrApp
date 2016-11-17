@@ -57,26 +57,45 @@ angular.module('starter', ['ionic', 'ion-floating-menu', 'starter.controllers'])
       views: {
          'menuContent': {
       templateUrl: 'menu-items/event.html',
-      controller:
-        'eventCtrl'
-         }}
-})
-    //     function($scope,$stateParams){
-    //     console.log($stateParams)
-    //     console.log(eventsStash[$stateParams.eventId])
-    //     $scope.event = eventsStash[$stateParams.eventId];
-    //     curEvent = $stateParams.eventId;
-    //   }
-    // }}})
+      controller: 'eventCtrl'
+         }
+      }
+    })
     .state('app.activity',{
       url:'/activity',
-      templateUrl: 'menu-items/activity.html',
       views: {
         'menuContent': {
           templateUrl: 'menu-items/activity.html',
-          controller:
-            'actCtrl'
-        }}
+          controller: 'actCtrl'
+        }
+      }
+    })
+    .state('app.myEvents',{
+      url:'/myEvents',
+      views: {
+        'menuContent': {
+          templateUrl: 'menu-items/myEvents.html',
+          controller: 'myEventsCtrl'
+        }
+      }
+    })
+    .state('app.myEvent',{
+      url:'/myEvent',
+      views: {
+        'menuContent': {
+          templateUrl: 'menu-items/myEvent.html',
+          controller: 'myEventCtrl'
+        }
+      }
+    })
+    .state('app.myActivity',{
+      url:'/myActivity',
+      views: {
+        'menuContent': {
+          templateUrl: 'menu-items/myActivity.html',
+          controller: 'myActCtrl'
+        }
+      }
     })
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
