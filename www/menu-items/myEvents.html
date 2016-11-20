@@ -1,9 +1,13 @@
 <ion-view view-title="My Events">
-  <ion-floating-button click="myEvent()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
+  <ion-floating-button ng-click="newEvent()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
   </ion-floating-button>
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="e in getAll" ng-click="setCur($index)" href="#/app/myEvent" ">
+      <ion-item ng-repeat="e in getAll" ng-click="setCur($index)" ">
+      <i class="icon ion-ios-arrow-left"></i>
+      <ion-option-button class="button-assertive" ng-click="deleteEvent(e.name,$index)">
+      Delete
+      </ion-option-button>
       {{e.name}}
       </ion-item>
     </ion-list>

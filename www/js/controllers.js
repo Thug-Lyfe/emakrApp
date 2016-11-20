@@ -155,6 +155,7 @@ angular.module('starter.controllers', [])
   //public factory & controllers
   .factory('Public', function() {
     return {
+
       onLogin: function(){
         // rest call set private events (delete when rest calls implemented)
         window.localStorage['privateEvents'] = angular.toJson(eventStashP);
@@ -308,12 +309,31 @@ angular.module('starter.controllers', [])
         }
         return {};
       },
-      newEvent: function(eventName) {
+      newEvent: function(all,eventName) {
         // Add a new event
-        return {
-          name: eventName,
-          activities: []
-        };
+        var restCallNewEvent = true
+        if(restCallNewEvent){
+          all.push({ name: eventName,
+            description: "",
+            activities:[],
+            date: new Date(),
+            JoinCode: "(CreateJoinCode(user))",
+            location: "",
+            proximity: 0,
+            participants: []
+          })
+          window.localStorage['privateEvents'] = angular.toJson(all);
+        }
+        return all;
+      },
+      deleteEvent: function(all,index){
+
+        var restCallDelete = true
+        if(restCallDelete){
+          all.splice(index,1);
+          window.localStorage['privateEvents'] = angular.toJson(all);
+        }
+        return all;
       },
 
 
@@ -332,12 +352,41 @@ angular.module('starter.controllers', [])
       }
     }
   })
-  .controller('myEventsCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate) {
+  .controller('myEventsCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate,$ionicPopup) {
 
     $scope.getAll = Private.all();
     $scope.setCur = function(index){
       Private.setLastActiveEvent(index);
     };
+    $scope.newEvent = function(){
+      $ionicPopup.prompt({
+        title: 'New Event',
+        template: "Event Name",
+        inputPlaceholder: "Event name",
+        okText: "Create Event"
+      }).then(function(res){
+        if(res) {
+          Private.newEvent($scope.getAll,res)
+        }}).then(function(all){
+        if(all) {
+          $scope.getAll = res;
+        }})
+    };
+    $scope.deleteEvent = function(eventName, index) {
+      $ionicPopup.confirm({
+        title: 'Delete ' + eventName + ' ?',
+        okText: "Delete"
+      }).then(function (res) {
+        if (res) {
+          Private.deleteEvent($scope.getAll, index)
+        }
+      }).then(function (all) {
+        if (all) {
+          $scope.getAll = res;
+        }
+      })
+    };
+
   })
   .controller('myEventCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate) {
     $scope.getEvent = Private.getEvent(Private.getLastActiveEvent());
