@@ -5,22 +5,22 @@ var eventStashP = [
       { name: "activity 1.1",
         description: "this is activity 1 for event 1",
         location: "coordinates xx:yy",
-        proximity: 20,
+        proximity: 0,
         type: "own pace"},
       { name: "activity 1.2",
         description: "this is activity 2 for event 1",
         location: "coordinates xx:yy",
-        proximity: 20,
+        proximity: 0,
         type: "multiple choice"},
       { name: "activity 1.3",
         description: "this is activity 3 for event 1",
         location: "coordinates xx:yy",
-        proximity: 20,
+        proximity: 0,
         type: "manual"}],
     date: new Date(),
     JoinCode: "userId1234",
     location: "coordinates xx:yy",
-    proximity: 50,
+    proximity: 3,
     participants:[{part:"id1"},{part:"id2"},{Part:"id3"}]
   },
   { name: 'private event 2',
@@ -29,22 +29,22 @@ var eventStashP = [
       { name: "activity 2.1",
         description: "this is activity 1 for event 2",
         location: "coordinates xx:yy",
-        proximity: 20,
+        proximity: 0,
         type: "own pace"},
       { name: "activity 2.2",
         description: "this is activity 2 for event 2",
         location: "coordinates xx:yy",
-        proximity: 20,
+        proximity: 0,
         type: "multiple choice"},
       { name: "activity 2.3",
         description: "this is activity 3 for event 2",
         location: "coordinates xx:yy",
-        proximity: 20,
+        proximity: 0,
         type: "manual"}],
     date: new Date(),
     JoinCode: "userId1235",
     location: "coordinates xx:yy",
-    proximity: 50,
+    proximity: 2,
     participants:[{part:"id1"},{part:"id2"},{Part:"id3"}]
   },
   { name: 'private event 3',
@@ -53,22 +53,22 @@ var eventStashP = [
       { name: "activity 3.1",
         description: "this is activity 1 for event 3",
         location: "coordinates xx:yy",
-        proximity: 20,
+        proximity: 0,
         type: "own pace"},
       { name: "activity 3.2",
         description: "this is activity 2 for event 3",
         location: "coordinates xx:yy",
-        proximity: 20,
+        proximity: 0,
         type: "multiple choice"},
       { name: "activity 3.3",
         description: "this is activity 3 for event 3",
         location: "coordinates xx:yy",
-        proximity: 20,
+        proximity: 0,
         type: "manual"}],
     date: new Date(),
     JoinCode: "userId4321",
     location: "coordinates xx:yy",
-    proximity: 50,
+    proximity: 4,
     participants:[{part:"id1"},{part:"id2"},{Part:"id3"}]
   }
 ];
@@ -326,6 +326,12 @@ angular.module('starter.controllers', [])
         }
         return all;
       },
+      saveEvent: function(joinCode, all, event, index){
+        event.joinCode = "userId" + joinCode;
+        all[index] = event;
+        window.localStorage['privateEvents'] = angular.toJson(all);
+        return event;
+      },
       deleteEvent: function(all,index){
 
         var restCallDelete = true
@@ -369,7 +375,7 @@ angular.module('starter.controllers', [])
           Private.newEvent($scope.getAll,res)
         }}).then(function(all){
         if(all) {
-          $scope.getAll = res;
+          $scope.getAll = all;
         }})
     };
     $scope.deleteEvent = function(eventName, index) {
@@ -382,7 +388,7 @@ angular.module('starter.controllers', [])
         }
       }).then(function (all) {
         if (all) {
-          $scope.getAll = res;
+          $scope.getAll = all;
         }
       })
     };
@@ -393,6 +399,32 @@ angular.module('starter.controllers', [])
     $scope.setAct = function() {
       Private.setLastActiveAct(index);
     }
+    $scope.proxies = [
+      {value: 1, text: '0 meters'},
+      {value: 2, text: '10 meters'},
+      {value: 3, text: '25 meters'},
+      {value: 4, text: '50 meters'},
+      {value: 5, text: '100 meters'}
+    ];
+    $scope.getJoinCode = $scope.getEvent.JoinCode.substring(6)
+
+    $scope.saveEvent2 = function() {
+      return Private.saveEvent($scope.getJoinCode, Private.all(), $scope.getEvent, Private.getLastActiveEvent())
+    }
+
+    $scope.saveEvent = function() {
+      // $scope.user already updated!
+      return $http.post('/saveEvent', $scope.getEvent).error(function(err) {
+        if(err.field && err.msg) {
+          // err like {field: "name", msg: "Server-side error for this username!"}
+          $scope.editableForm.$setError(err.field, err.msg);
+        } else {
+          // unknown error
+          $scope.editableForm.$setError('desc', 'Unknown error!');
+        }
+      });
+    };
+
   })
   .controller('myActCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate) {
     $scope.getAct = Private.getAct(Private.getLastActiveEvent(),Private.getLastActiveAct());

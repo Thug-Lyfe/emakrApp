@@ -3,10 +3,13 @@
   </ion-floating-button>
   <ion-content>
     <ion-list>
-      <ion-item ng-repeat="e in getAll" ng-click="setCur($index)" ">
+      <ion-item ng-repeat="e in getAll">
       <i class="icon ion-ios-arrow-left"></i>
       <ion-option-button class="button-assertive" ng-click="deleteEvent(e.name,$index)">
-      Delete
+        Delete
+      </ion-option-button>
+      <ion-option-button class="button-energized" ng-click="setCur($index)" UI-SREF="app.myEvent()">
+        Edit
       </ion-option-button>
       {{e.name}}
       </ion-item>
