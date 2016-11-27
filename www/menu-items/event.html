@@ -6,19 +6,15 @@
         Description: {{getEvent.description}}
       </div>
       <div class="item item-text-wrap">
-        Join code: {{getEvent.JoinCode}}
-      </div>
-      <div class="item item-text-wrap">
         Location: ((location picker)){{getEvent.location}}
       </div>
       <div class="item item-text-wrap">
-        Proximity: {{getEvent.proximity}} meters (participants will have to be within this radius to join the event)
+        Proximity: {{getEvent.proximity}} meters    (you will need to be within this radius to participate)
       </div>
     </div>
-    <ion-list>
-      <ion-item ng-repeat="act in getEvent.activities" ng-click="setCur($index)" href="#/app/activity"">
-        {{act.name}}
-      </ion-item>
-    </ion-list>
+    <button type="button" class="btn btn-default" >
+      Join Event!
+    </button>
   </ion-content>
+
 </ion-view>

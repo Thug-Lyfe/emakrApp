@@ -16,7 +16,7 @@ var eventStashP = [
         description: "this is activity 3 for event 1",
         location: "coordinates xx:yy",
         proximity: 0,
-        type: "manual"}],
+        type: 1}],
     date: new Date(),
     JoinCode: "userId1234",
     location: "coordinates xx:yy",
@@ -40,7 +40,7 @@ var eventStashP = [
         description: "this is activity 3 for event 2",
         location: "coordinates xx:yy",
         proximity: 0,
-        type: "manual"}],
+        type: 1}],
     date: new Date(),
     JoinCode: "userId1235",
     location: "coordinates xx:yy",
@@ -147,9 +147,8 @@ var eventStash = [
   }
 ];
 var typeDesc = {
-  'ownPace':"Participants will be able to go through activities as they please",
-  'manual':"Participants will request when they want to go to next activity, where you will be required to approve said request",
-  'multipleChoice':"Participants will answer a question, this process is automated"
+  'vote':"(participants will vote, statistics for these votes can then be seen by the creator)",
+  'multipleChoice':"(Participants will answer a question, this process is automated)"
 }
 angular.module('starter.controllers', [])
   //public factory & controllers
@@ -326,11 +325,23 @@ angular.module('starter.controllers', [])
         }
         return all;
       },
+      duplicateEvent: function(all,event){
+        event.name = event.name + " (dupli)"
+          all.push(event)
+        window.localStorage['privateEvents'] = angular.toJson(all);
+        return all;
+      },
       saveEvent: function(joinCode, all, event, index){
         event.joinCode = "userId" + joinCode;
         all[index] = event;
         window.localStorage['privateEvents'] = angular.toJson(all);
         return event;
+      },
+      saveAct: function(all, act, eventIndex, ActIndex){
+        all[eventIndex].activities[ActIndex] = act;
+        window.localStorage['privateEvents'] = angular.toJson(all);
+        return act;
+
       },
       deleteEvent: function(all,index){
 
@@ -392,7 +403,9 @@ angular.module('starter.controllers', [])
         }
       })
     };
-
+    $scope.duplicate = function(index){
+      $scope.getAll = Private.duplicateEvent($scope.getAll, $scope.getAll[index]);
+    }
   })
   .controller('myEventCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate) {
     $scope.getEvent = Private.getEvent(Private.getLastActiveEvent());
@@ -424,22 +437,44 @@ angular.module('starter.controllers', [])
         }
       });
     };
+    $scope.duplicate = function(index){
+      var newAct = $scope.getEvent.activities[index];
+      newAct.name = newAct.name + " (dupli)";
+      $scope.getEvent.activities.push(newAct)
+      $scope.saveEvent2();
+    }
 
   })
   .controller('myActCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate) {
     $scope.getAct = Private.getAct(Private.getLastActiveEvent(),Private.getLastActiveAct());
     $scope.getTypeDesc = function(type){
-      if(type.toLowerCase() === ("own pace")){
-        return typeDesc.ownPace
-      }
-      if(type.toLowerCase() === ("manual"||"manuel")){
-        return typeDesc.manual
-      }
-      if(type.toLowerCase() === ("multiple choice")){
+      if(type == 1){
         return typeDesc.multipleChoice
       }
+      if(type == 2){
+        return typeDesc.vote
+      }
+
       return;
     }
+
+    $scope.proxies = [
+      {value: 1, text: '0 meters'},
+      {value: 2, text: '10 meters'},
+      {value: 3, text: '25 meters'},
+      {value: 4, text: '50 meters'},
+      {value: 5, text: '100 meters'}
+    ];
+
+    $scope.types = [
+      {value: 1, text: 'Multiple Choice'},
+      {value: 2, text: 'Vote'}
+    ]
+
+    $scope.saveAct = function() {
+      return Private.saveAct(Private.all(), $scope.getAct, Private.getLastActiveEvent(),Private.getLastActiveAct())
+    }
+
   })
 
 
