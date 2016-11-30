@@ -62,15 +62,6 @@ angular.module('starter', ['ionic', 'ion-floating-menu', 'starter.controllers', 
          }
       }
     })
-    .state('app.activity',{
-      url:'/activity',
-      views: {
-        'menuContent': {
-          templateUrl: 'menu-items/activity.html',
-          controller: 'actCtrl'
-        }
-      }
-    })
     .state('app.myEvents',{
       url:'/myEvents',
       views: {

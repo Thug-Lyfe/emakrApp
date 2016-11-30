@@ -1,8 +1,8 @@
 <ion-view view-title="{{getEvent.name}}">
-  <ion-floating-button click="myEvent()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
+  <ion-floating-button ng-click="newAct()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
   </ion-floating-button>
   <ion-content>
-    <form editable-form name="editableForm" onaftersave="saveEvent2()">
+    <form editable-form name="editableForm" onaftersave="saveEvent()">
     <div class="card">
       <div class="item item-text-wrap">
         <span class="title">Description: </span>
@@ -41,7 +41,20 @@
       </div>
     </form>
     <ion-list>
-      <ion-item ng-repeat="act in getEvent.activities" ng-click="setCur($index)" href="#/app/myActivity"">
+      <ion-item ng-repeat="act in getEvent.activities" >
+      <i class="icon ion-ios-arrow-left"></i>
+      <ion-option-button class="button-assertive" ng-click="deleteAct(e.name,$index)">
+        Delete
+      </ion-option-button>
+      <ion-option-button class="button-positive" ng-click="setAct($index)" UI-SREF="app.myActivity()">
+        Details
+      </ion-option-button>
+      <ion-option-button class="button-royal" ng-click="duplicate($index)">
+        Duplicate
+      </ion-option-button>
+      <ion-option-button class="button-energized" ng-click="setAct($index)" UI-SREF="app.myActivity()">
+        Preview
+      </ion-option-button>
       {{act.name}}
       </ion-item>
     </ion-list>

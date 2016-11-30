@@ -21,7 +21,7 @@ var eventStashP = [
     JoinCode: "userId1234",
     location: "coordinates xx:yy",
     proximity: 3,
-    participants:[{part:"id1"},{part:"id2"},{Part:"id3"}]
+    participants:[]
   },
   { name: 'private event 2',
     description: "this is private event 2 and stuff",
@@ -45,7 +45,7 @@ var eventStashP = [
     JoinCode: "userId1235",
     location: "coordinates xx:yy",
     proximity: 2,
-    participants:[{part:"id1"},{part:"id2"},{Part:"id3"}]
+    participants:[]
   },
   { name: 'private event 3',
     description: "this is private event 3 and stuff",
@@ -69,7 +69,7 @@ var eventStashP = [
     JoinCode: "userId4321",
     location: "coordinates xx:yy",
     proximity: 4,
-    participants:[{part:"id1"},{part:"id2"},{Part:"id3"}]
+    participants:[]
   }
 ];
 var eventStash = [
@@ -262,21 +262,7 @@ angular.module('starter.controllers', [])
 
     })
 
-  .controller('actCtrl', function($scope, $timeout, $ionicModal, Public, $ionicSideMenuDelegate) {
-    $scope.getAct = Public.getAct(Public.getLastActiveEvent(),Public.getLastActiveAct());
-    $scope.getTypeDesc = function(type){
-      if(type.toLowerCase() === ("own pace")){
-        return typeDesc.ownPace
-      }
-      if(type.toLowerCase() === ("manual"||"manuel")){
-        return typeDesc.manual
-      }
-      if(type.toLowerCase() === ("multiple choice")){
-        return typeDesc.multipleChoice
-      }
-      return;
-    }
-  })
+
 
 
 
@@ -301,13 +287,7 @@ angular.module('starter.controllers', [])
         return {};
 
       },
-      getAct: function(eventIndex,actIndex){
-        var actString = window.localStorage['privateEvents'];
-        if(actString) {
-          return angular.fromJson(actString)[eventIndex].activities[actIndex];
-        }
-        return {};
-      },
+
       newEvent: function(all,eventName) {
         // Add a new event
         var restCallNewEvent = true
@@ -326,9 +306,21 @@ angular.module('starter.controllers', [])
         return all;
       },
       duplicateEvent: function(all,event){
-        event.name = event.name + " (dupli)"
-          all.push(event)
-        window.localStorage['privateEvents'] = angular.toJson(all);
+        var newEvent = {
+          name: event.name + "(d)",
+          description: event.description,
+          activities:event.activities,
+          date: new Date(),
+          JoinCode: "(CreateJoinCode(user))",
+          location: event.location,
+          proximity: event.proximity,
+          participants: []
+        }
+        var restCallNewEvent = true
+        if(restCallNewEvent){
+          all.push(newEvent)
+          window.localStorage['privateEvents'] = angular.toJson(all);
+        }
         return all;
       },
       saveEvent: function(joinCode, all, event, index){
@@ -336,12 +328,6 @@ angular.module('starter.controllers', [])
         all[index] = event;
         window.localStorage['privateEvents'] = angular.toJson(all);
         return event;
-      },
-      saveAct: function(all, act, eventIndex, ActIndex){
-        all[eventIndex].activities[ActIndex] = act;
-        window.localStorage['privateEvents'] = angular.toJson(all);
-        return act;
-
       },
       deleteEvent: function(all,index){
 
@@ -353,7 +339,58 @@ angular.module('starter.controllers', [])
         return all;
       },
 
+      newAct: function(all,index,ActName) {
+        // Add a new event
 
+        var restCallNewAct = true
+        if(restCallNewAct){
+          all[index].activities.push({
+              name: ActName,
+              description: "",
+              location: "(locationPicker)",
+              proximity: 0,
+              type: 0
+          })
+          window.localStorage['privateEvents'] = angular.toJson(all);
+        }
+        return all[index];
+      },
+      duplicateAct: function(all,index,act){
+        var newAct = {
+          name: act.name + "(d)",
+          description: act.description,
+          location: act.location,
+          proximity: act.proximity
+        }
+        var restCallNewAct = true
+        if(restCallNewAct){
+          all[index].activities.push(newAct)
+          window.localStorage['privateEvents'] = angular.toJson(all);
+        }
+        return all[index];
+      },
+      deleteAct: function(all,eventIndex,index){
+
+        var restCallDelete = true
+        if(restCallDelete){
+          all[eventIndex].activities.splice(index,1);
+          window.localStorage['privateEvents'] = angular.toJson(all);
+        }
+        return event;
+      },
+      saveAct: function(all, act, eventIndex, ActIndex){
+        all[eventIndex].activities[ActIndex] = act;
+        window.localStorage['privateEvents'] = angular.toJson(all);
+        return act;
+
+      },
+      getAct: function(eventIndex,actIndex){
+        var actString = window.localStorage['privateEvents'];
+        if(actString) {
+          return angular.fromJson(actString)[eventIndex].activities[actIndex];
+        }
+        return {};
+      },
 
       getLastActiveEvent: function() {
         return parseInt(window.localStorage['lastActiveEvent']) || 0;
@@ -372,7 +409,7 @@ angular.module('starter.controllers', [])
   .controller('myEventsCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate,$ionicPopup) {
 
     $scope.getAll = Private.all();
-    $scope.setCur = function(index){
+    $scope.setEvent = function(index){
       Private.setLastActiveEvent(index);
     };
     $scope.newEvent = function(){
@@ -404,14 +441,11 @@ angular.module('starter.controllers', [])
       })
     };
     $scope.duplicate = function(index){
-      $scope.getAll = Private.duplicateEvent($scope.getAll, $scope.getAll[index]);
+      $scope.getAll = Private.duplicateEvent($scope.getAll,$scope.getAll[index]);
+
     }
   })
-  .controller('myEventCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate) {
-    $scope.getEvent = Private.getEvent(Private.getLastActiveEvent());
-    $scope.setAct = function() {
-      Private.setLastActiveAct(index);
-    }
+  .controller('myEventCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate,$ionicPopup) {
     $scope.proxies = [
       {value: 1, text: '0 meters'},
       {value: 2, text: '10 meters'},
@@ -419,29 +453,50 @@ angular.module('starter.controllers', [])
       {value: 4, text: '50 meters'},
       {value: 5, text: '100 meters'}
     ];
-    $scope.getJoinCode = $scope.getEvent.JoinCode.substring(6)
 
-    $scope.saveEvent2 = function() {
-      return Private.saveEvent($scope.getJoinCode, Private.all(), $scope.getEvent, Private.getLastActiveEvent())
+
+
+    $scope.getEvent = Private.getEvent(Private.getLastActiveEvent());
+    $scope.getJoinCode = $scope.getEvent.JoinCode.substring(6)
+    $scope.saveEvent = function() {
+      $scope.getEvent = Private.saveEvent($scope.getJoinCode, Private.all(), $scope.getEvent, Private.getLastActiveEvent())
     }
 
-    $scope.saveEvent = function() {
-      // $scope.user already updated!
-      return $http.post('/saveEvent', $scope.getEvent).error(function(err) {
-        if(err.field && err.msg) {
-          // err like {field: "name", msg: "Server-side error for this username!"}
-          $scope.editableForm.$setError(err.field, err.msg);
-        } else {
-          // unknown error
-          $scope.editableForm.$setError('desc', 'Unknown error!');
+
+    $scope.setAct = function() {
+      Private.setLastActiveAct(index);
+    }
+    $scope.newAct = function(){
+      $ionicPopup.prompt({
+        title: 'New Activity',
+        template: "Activity Name",
+        inputPlaceholder: "name",
+        okText: "Create Activity"
+      }).then(function(res){
+        if(res) {
+          Private.newAct(Private.all(),Private.getLastActiveEvent(),res)
+        }}).then(function(event){
+        if(event) {
+          $scope.getEvent = event;
+        }})
+    };
+    $scope.deleteAct = function(ActName, index) {
+      $ionicPopup.confirm({
+        title: 'Delete ' + ActName + ' ?',
+        okText: "Delete"
+      }).then(function (res) {
+        if (res) {
+          Private.deleteAct(Private.all(), Private.getLastActiveEvent(),index)
         }
-      });
+      }).then(function (event) {
+        if (event) {
+          $scope.getEvent = event;
+        }
+      })
     };
     $scope.duplicate = function(index){
-      var newAct = $scope.getEvent.activities[index];
-      newAct.name = newAct.name + " (dupli)";
-      $scope.getEvent.activities.push(newAct)
-      $scope.saveEvent2();
+      $scope.getEvent = Private.duplicateAct(Private.all(),Private.lastActiveEvent,$scope.getEvent.activities[index]);
+
     }
 
   })

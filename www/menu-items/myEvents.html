@@ -5,17 +5,17 @@
     <ion-list>
       <ion-item ng-repeat="e in getAll">
       <i class="icon ion-ios-arrow-left"></i>
-      <ion-option-button class="button-assertive" ng-click="deleteEvent(e.name,$index)">
-        Delete
-      </ion-option-button>
-      <ion-option-button class="button-positive" ng-click="setCur($index)" UI-SREF="app.myEvent()">
-        Details
-      </ion-option-button>
+        <ion-option-button class="button-assertive" ng-click="deleteEvent(e.name,$index)">
+          Delete
+        </ion-option-button>
+        <ion-option-button class="button-positive" ng-click="setEvent($index)" UI-SREF="app.myEvent()">
+          Details
+        </ion-option-button>
         <ion-option-button class="button-royal" ng-click="duplicate($index)">
           Duplicate
         </ion-option-button>
-        <ion-option-button class="button-energized" ng-click="setCur($index)" UI-SREF="app.myEvent()">
-           Preview
+        <ion-option-button class="button-energized" ng-click="setEvent($index)" UI-SREF="app.myEvent()">
+          Preview
         </ion-option-button>
       {{e.name}}
       </ion-item>
