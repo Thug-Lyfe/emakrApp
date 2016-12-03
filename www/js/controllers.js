@@ -376,7 +376,7 @@ angular.module('starter.controllers', [])
           all[eventIndex].activities.splice(index,1);
           window.localStorage['privateEvents'] = angular.toJson(all);
         }
-        return event;
+        return all[eventIndex];
       },
       saveAct: function(all, act, eventIndex, ActIndex){
         all[eventIndex].activities[ActIndex] = act;
@@ -406,7 +406,7 @@ angular.module('starter.controllers', [])
       }
     }
   })
-  .controller('myEventsCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate,$ionicPopup) {
+  .controller('myEventsCtrl', function($rootScope,$scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate,$ionicPopup) {
 
     $scope.getAll = Private.all();
     $scope.setEvent = function(index){
@@ -420,11 +420,12 @@ angular.module('starter.controllers', [])
         okText: "Create Event"
       }).then(function(res){
         if(res) {
-          Private.newEvent($scope.getAll,res)
+          return Private.newEvent($scope.getAll,res)
         }}).then(function(all){
         if(all) {
           $scope.getAll = all;
         }})
+
     };
     $scope.deleteEvent = function(eventName, index) {
       $ionicPopup.confirm({
@@ -443,9 +444,22 @@ angular.module('starter.controllers', [])
     $scope.duplicate = function(index){
       $scope.getAll = Private.duplicateEvent($scope.getAll,$scope.getAll[index]);
 
+
     }
+
+    var oldSoftBack = $rootScope.$ionicGoBack;
+    $rootScope.$ionicGoBack = function() {
+      console.log("yolo1");
+      $scope.getAll = Private.all();
+      oldSoftBack();
+    };
+
+
   })
-  .controller('myEventCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate,$ionicPopup) {
+  .controller('myEventCtrl', function($rootScope, $scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate,$ionicPopup) {
+
+
+
     $scope.proxies = [
       {value: 1, text: '0 meters'},
       {value: 2, text: '10 meters'},
@@ -453,7 +467,10 @@ angular.module('starter.controllers', [])
       {value: 4, text: '50 meters'},
       {value: 5, text: '100 meters'}
     ];
-
+    $scope.isButton = false;
+    $scope.swapButton = function(){
+      $scope.isButton = !$scope.isButton;
+    }
 
 
     $scope.getEvent = Private.getEvent(Private.getLastActiveEvent());
@@ -463,10 +480,11 @@ angular.module('starter.controllers', [])
     }
 
 
-    $scope.setAct = function() {
+    $scope.setAct = function(index) {
       Private.setLastActiveAct(index);
     }
     $scope.newAct = function(){
+      console.log("step 0")
       $ionicPopup.prompt({
         title: 'New Activity',
         template: "Activity Name",
@@ -474,7 +492,7 @@ angular.module('starter.controllers', [])
         okText: "Create Activity"
       }).then(function(res){
         if(res) {
-          Private.newAct(Private.all(),Private.getLastActiveEvent(),res)
+          return Private.newAct(Private.all(),Private.getLastActiveEvent(),res)
         }}).then(function(event){
         if(event) {
           $scope.getEvent = event;
@@ -487,18 +505,31 @@ angular.module('starter.controllers', [])
       }).then(function (res) {
         if (res) {
           Private.deleteAct(Private.all(), Private.getLastActiveEvent(),index)
-        }
-      }).then(function (event) {
+        }}).then(function (event) {
         if (event) {
           $scope.getEvent = event;
-        }
-      })
+        }})
     };
     $scope.duplicate = function(index){
-      $scope.getEvent = Private.duplicateAct(Private.all(),Private.lastActiveEvent,$scope.getEvent.activities[index]);
+      $scope.getEvent = Private.duplicateAct(Private.all(),Private.getLastActiveEvent(),$scope.getEvent.activities[index]);
 
     }
 
+    var oldSoftBack = $rootScope.$ionicGoBack;
+    $rootScope.$ionicGoBack = function() {
+      console.log("yolo2");
+      $scope.getEvent = $scope.getEvent = Private.getEvent(Private.getLastActiveEvent());
+      oldSoftBack();
+    };
+    /*virker ikke med destroy...
+
+    var deregisterSoftBack = function() {
+      $rootScope.$ionicGoBack = oldSoftBack;
+    };
+    $scope.$on('$destroy', function() {
+      deregisterSoftBack();
+    });
+    */
   })
   .controller('myActCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate) {
     $scope.getAct = Private.getAct(Private.getLastActiveEvent(),Private.getLastActiveAct());
@@ -529,6 +560,8 @@ angular.module('starter.controllers', [])
     $scope.saveAct = function() {
       return Private.saveAct(Private.all(), $scope.getAct, Private.getLastActiveEvent(),Private.getLastActiveAct())
     }
+
+
 
   })
 

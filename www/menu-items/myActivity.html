@@ -1,49 +1,50 @@
 <ion-view view-title="{{getAct.name}}">
   <ion-content>
     <form editable-form name="editableForm" onaftersave="saveAct()">
-    <ion-list>
-      <ion-item >
-        <span class="title">Name: </span>
+    <div class="list card">
+      <div class="item item-icon-left">
+        <span class="title">Activity Name: </span>
         <span editable-text="getAct.name" e-name="name"
               e-required>{{ getAct.name || 'empty' }}</span>
-      </ion-item>
-      <ion-item >
+      </div>
+      <div class="item item-icon-left">
         <span class="title">Description: </span>
         <span editable-text="getAct.description" e-name="desc"
               e-required>{{ getAct.description || 'empty' }}</span>
-      </ion-item>
-      <ion-item >
-        Location: ((location picker)){{getAct.location}}
-      </ion-item>
-      <ion-item >
+      </div>
+      <div class="item item-icon-left">
+        <i class="icon ion-ios-location"></i>
+        Location: ((location picker)){{getEvent.location}}
+      </div>
+      <div class="item item-icon-left">
         <span class="title">Proximity </span>
         <span editable-select="getAct.proximity" e-ng-options="p.value as p.text for p in proxies">
         {{ ( proxies | filter:{value: getAct.proximity})[0].text || 'Not set' }}
       </span>
-      </ion-item>
-      <ion-item >
+      </div>
+        <div class="item item-icon-left">
         <span class="title">Progress Type: </span>
         <span editable-select="getAct.type" e-ng-options="p.value as p.text for p in types">
         {{ ( types | filter:{value: getAct.type})[0].text + "      "+getTypeDesc(getAct.type)|| 'Not set' }}
       </span>
 
-      </ion-item>
+      </div>
 
-    </ion-list>
-      <div>
+    </div>
+      <div class="button-bar">
         <!-- button to show form -->
-        <button type="button" class="btn btn-default" ng-click="editableForm.$show()" ng-show="!editableForm.$visible">
+        <button type="button" class="button button-positive" ng-click="editableForm.$show()" ng-show="!editableForm.$visible">
           Edit
         </button>
         <!-- buttons to submit / cancel form -->
-        <span ng-show="editableForm.$visible">
-        <button type="submit" class="btn btn-primary" ng-disabled="editableForm.$waiting">
+
+        <button type="submit" class="button button-balanced" ng-disabled="editableForm.$waiting" ng-show="editableForm.$visible">
           Save
         </button>
-        <button type="button" class="btn btn-default" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">
+        <button type="button" class="button button-assertive" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()" ng-show="editableForm.$visible">
           Cancel
         </button>
-      </span>
+
       </div>
       </form>
   </ion-content>
