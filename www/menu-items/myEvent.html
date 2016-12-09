@@ -1,8 +1,9 @@
 <ion-view view-title="{{getEvent.name}}">
-  <ion-floating-button ng-click="newAct()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
-  </ion-floating-button>
+
   <ion-content>
     <form editable-form name="editableForm" onaftersave="saveEvent()">
+      <ion-floating-button ng-click="newAct();editableForm.$show()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
+      </ion-floating-button>
     <div class="list card">
       <div class="item item-icon-left">
         <span class="title">Event Name: </span>
@@ -41,25 +42,29 @@
         <button type="submit" class="button button-balanced" ng-disabled="editableForm.$waiting" ng-show="editableForm.$visible">
           Save
         </button>
-        <button type="button" class="button button-assertive" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()" ng-show="editableForm.$visible">
+        <button type="button" class="button button-assertive" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel();cancelSave()" ng-show="editableForm.$visible">
           Cancel
         </button>
 
       </div>
     </form>
-    <ion-list>
+    <ion-list show-reorder="editableForm.$visible">
       <ion-item ng-repeat="act in getEvent.activities" >
       <i class="icon ion-ios-arrow-left"></i>
-        <ion-option-button class="button-assertive icon ion-ios-trash-outline icon-only custom-icon" ng-click="deleteAct(e.name,$index)">
+        <ion-option-button class="button-assertive icon ion-ios-trash-outline icon-only custom-icon" ng-click="deleteAct(e.name,$index);editableForm.$show()">
         </ion-option-button>
       <ion-option-button class="button-positive icon ion-edit icon-only custom-icon" ng-click="setAct($index)" UI-SREF="app.myActivity()">
       </ion-option-button>
-      <ion-option-button class="button-royal icon ion-document icon-only custom-icon " ng-click="duplicate($index)">
+      <ion-option-button class="button-royal icon ion-document icon-only custom-icon " ng-click="duplicate($index);editableForm.$show()">
       </ion-option-button>
       <ion-option-button class="button-energized icon ion-eye icon-only custom-icon" ng-click="setAct($index)" UI-SREF="app.myActivity()">
       </ion-option-button>
 
+
       {{act.name}}
+        <ion-reorder-button class="ion-navicon"
+                            on-reorder="moveItem(act,$fromIndex, $toIndex)">
+        </ion-reorder-button>
       </ion-item>
     </ion-list>
   </ion-content>

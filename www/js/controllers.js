@@ -1,22 +1,29 @@
 var eventStashP = [
-  { name: 'private event 1',
-    description: "this is private event 1 and stuff",
+  { name: 'president quiz',
+    description: "This is a quiz about politics in the USA",
     activities:[
-      { name: "activity 1.1",
-        description: "this is activity 1 for event 1",
+      { name: "President of USA",
+        description: "Who is the current President if the USA?",
         location: "coordinates xx:yy",
         proximity: 0,
-        type: "own pace"},
-      { name: "activity 1.2",
+        type: 1,
+        options: ["Donald Trump","Barrack Obama","Mitt Romney","Hillary Clinton"],
+        ans: 1 },
+      { name: "Vice President of Usa",
         description: "this is activity 2 for event 1",
         location: "coordinates xx:yy",
         proximity: 0,
-        type: "multiple choice"},
-      { name: "activity 1.3",
-        description: "this is activity 3 for event 1",
+        type: 1,
+        options: ["Donald Trump","Mike Pence","Sarah Palin","Joe Biden"],
+        ans: 1 },
+      { name: "The next Vice president",
+        description: "Who is the next vice president of the USA",
         location: "coordinates xx:yy",
         proximity: 0,
-        type: 1}],
+        type: 1,
+        options: ["Donald Trump","Mike Pence","Sarah Palin","Joe Biden"],
+        ans: 1 },
+    ],
     date: new Date(),
     JoinCode: "userId1234",
     location: "coordinates xx:yy",
@@ -452,6 +459,7 @@ angular.module('starter.controllers', [])
       console.log("yolo1");
       $scope.getAll = Private.all();
       oldSoftBack();
+      $rootScope.$ionicGoBack = oldSoftBack;
     };
 
 
@@ -479,6 +487,9 @@ angular.module('starter.controllers', [])
       $scope.getEvent = Private.saveEvent($scope.getJoinCode, Private.all(), $scope.getEvent, Private.getLastActiveEvent())
     }
 
+    $scope.cancelSave = function(){
+      $scope.getEvent = Private.getEvent(Private.getLastActiveEvent());
+    }
 
     $scope.setAct = function(index) {
       Private.setLastActiveAct(index);
@@ -492,11 +503,19 @@ angular.module('starter.controllers', [])
         okText: "Create Activity"
       }).then(function(res){
         if(res) {
-          return Private.newAct(Private.all(),Private.getLastActiveEvent(),res)
-        }}).then(function(event){
-        if(event) {
-          $scope.getEvent = event;
+          $scope.getEvent.activities.push({
+            name: res,
+            description: "",
+            location: "(locationPicker)",
+            proximity: 0,
+            type: 0
+          })
+          // return Private.newAct(Private.all(),Private.getLastActiveEvent(),res)
         }})
+        // .then(function(event){
+        // if(event) {
+        //   $scope.getEvent = event;
+        // }})
     };
     $scope.deleteAct = function(ActName, index) {
       $ionicPopup.confirm({
@@ -504,32 +523,43 @@ angular.module('starter.controllers', [])
         okText: "Delete"
       }).then(function (res) {
         if (res) {
-          Private.deleteAct(Private.all(), Private.getLastActiveEvent(),index)
-        }}).then(function (event) {
-        if (event) {
-          $scope.getEvent = event;
+          $scope.getEvent.activities.splice(index,1)
+          //Private.deleteAct(Private.all(), Private.getLastActiveEvent(),index)
         }})
+        // .then(function (event) {
+        // if (event) {
+        //   $scope.getEvent = event;
+        // }})
     };
     $scope.duplicate = function(index){
-      $scope.getEvent = Private.duplicateAct(Private.all(),Private.getLastActiveEvent(),$scope.getEvent.activities[index]);
-
+      var act = $scope.getEvent.activities[index];
+      $scope.getEvent.activities.push(
+      {
+        name: act.name + "(d)",
+        description: act.description,
+        location: act.location,
+        proximity: act.proximity
+      })
+      //$scope.getEvent = Private.duplicateAct(Private.all(),Private.getLastActiveEvent(),$scope.getEvent.activities[index]);
     }
+
+
+
+    $scope.moveItem = function(item,fromIndex, toIndex) {
+      //Move the item in the array
+      $scope.getEvent.activities.splice(fromIndex, 1);
+      $scope.getEvent.activities.splice(toIndex, 0, item);
+
+    };
 
     var oldSoftBack = $rootScope.$ionicGoBack;
     $rootScope.$ionicGoBack = function() {
       console.log("yolo2");
       $scope.getEvent = $scope.getEvent = Private.getEvent(Private.getLastActiveEvent());
       oldSoftBack();
-    };
-    /*virker ikke med destroy...
-
-    var deregisterSoftBack = function() {
       $rootScope.$ionicGoBack = oldSoftBack;
     };
-    $scope.$on('$destroy', function() {
-      deregisterSoftBack();
-    });
-    */
+
   })
   .controller('myActCtrl', function($scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate) {
     $scope.getAct = Private.getAct(Private.getLastActiveEvent(),Private.getLastActiveAct());
@@ -561,7 +591,42 @@ angular.module('starter.controllers', [])
       return Private.saveAct(Private.all(), $scope.getAct, Private.getLastActiveEvent(),Private.getLastActiveAct())
     }
 
+    $scope.setAns = function (index) {
+      $scope.getAct.ans = index;
+    }
 
+    $scope.moveItem = function(item,fromIndex, toIndex,isAns) {
+      //Move the item in the array
+      $scope.getAct.options.splice(fromIndex, 1);
+      $scope.getAct.options.splice(toIndex, 0, item);
+
+      if(isAns){
+        $scope.getAct.ans = toIndex;
+      }
+    };
+
+
+    $scope.getEdit = false;
+    $scope.setEdit = function(state){
+      $scope.getEdit = state;
+    }
+
+    $scope.deleteOption = function(index) {
+      $scope.getAct.options.splice(index,1)
+    };
+
+    $scope.newOption = function () {
+      $scope.getAct.options.push("option " + ($scope.getAct.options.length+1))
+    }
+
+    $scope.cancel = function(){
+      $scope.getAct = Private.getAct(Private.getLastActiveEvent(),Private.getLastActiveAct());
+    }
+
+    // $scope.getReorder = false;
+    // $scope.setReorder = function(state){
+    //   $scope.getReorder = state;
+    // }
 
   })
 

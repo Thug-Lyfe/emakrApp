@@ -1,6 +1,9 @@
 <ion-view view-title="{{getAct.name}}">
+
   <ion-content>
     <form editable-form name="editableForm" onaftersave="saveAct()">
+      <ion-floating-button ng-click="newOption();editableForm.$show(); editableForm.$show()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
+      </ion-floating-button>
     <div class="list card">
       <div class="item item-icon-left">
         <span class="title">Activity Name: </span>
@@ -9,7 +12,7 @@
       </div>
       <div class="item item-icon-left">
         <span class="title">Description: </span>
-        <span editable-text="getAct.description" e-name="desc"
+        <span editable-textarea="getAct.description" e-style="width: 500px" e-name="desc"
               e-required>{{ getAct.description || 'empty' }}</span>
       </div>
       <div class="item item-icon-left">
@@ -31,21 +34,51 @@
       </div>
 
     </div>
+
+
+
+  <ion-list show-reorder="editableForm.$visible">
+  <ion-item  ng-repeat="e in getAct.options" >
+    <div ng-click="setAns($index); editableForm.$show()" ng-class="{'button button-balanced ' : getAct.ans === $index ,  'button button-assertive': getAct.ans !== $index}">
+    </div>
+
+
+        <span  editable-text="e"  e-name="text"
+              e-required>{{ e || 'empty' }}</span>
+
+    <ion-option-button class="button-assertive icon ion-ios-trash-outline icon-only custom-icon" ng-click="deleteOption($index);editableForm.$show()">
+    </ion-option-button>
+        <ion-reorder-button class="ion-navicon"
+                            on-reorder="moveItem(e,$fromIndex, $toIndex, $fromIndex === getAct.ans)">
+        </ion-reorder-button>
+          </ion-item>
+
+
+  </ion-list>
+
       <div class="button-bar">
+
+        <!--<button type="button" class="button button-info" ng-click="setReorder(true)" ng-show="!getReorder && !editableForm.$visible">-->
+          <!--Reorder-->
+        <!--</button>-->
+        <!--<button type="button" class="button button-positive" ng-click="setReorder(false)" ng-show="getReorder && !editableForm.$visible">-->
+          <!--Done Ordering-->
+        <!--</button>-->
         <!-- button to show form -->
-        <button type="button" class="button button-positive" ng-click="editableForm.$show()" ng-show="!editableForm.$visible">
+        <button type="button" class="button button-positive" ng-click="editableForm.$show()" ng-show="!editableForm.$visible && !getReorder">
           Edit
         </button>
         <!-- buttons to submit / cancel form -->
 
-        <button type="submit" class="button button-balanced" ng-disabled="editableForm.$waiting" ng-show="editableForm.$visible">
+        <button type="submit" class="button button-balanced" ng-disabled="editableForm.$waiting" ng-show="editableForm.$visible && !getReorder">
           Save
         </button>
-        <button type="button" class="button button-assertive" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()" ng-show="editableForm.$visible">
+        <button type="button" class="button button-assertive" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel();cancel()" ng-show="editableForm.$visible && !getReorder">
           Cancel
         </button>
 
       </div>
       </form>
   </ion-content>
+
 </ion-view>
