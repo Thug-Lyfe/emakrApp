@@ -11,7 +11,7 @@
         </ion-option-button>
         <ion-option-button class="button-royal icon ion-document icon-only custom-icon " ng-click="duplicate($index)">
         </ion-option-button>
-        <ion-option-button class="button-energized icon ion-eye icon-only custom-icon" ng-click="setEvent($index)" UI-SREF="app.myEvent()">
+        <ion-option-button class="button-energized icon ion-eye icon-only custom-icon" ng-click="setEvent($index);setState()" UI-SREF="app.previewEvent">
         </ion-option-button>
 
       {{e.name}}

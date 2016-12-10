@@ -1,0 +1,28 @@
+<ion-view view-title="{{getAct.name}}">
+
+  <ion-content>
+
+        <div class="item item-icon-left">
+          <span class="title">Description: </span>
+          <span> {{getAct.description}} </span>
+        </div>
+
+
+
+
+      <ion-list >
+        <ion-item  ng-class="{'balanced-bg' : ans === $index}" ng-repeat="e in getAct.options" ng-click="chooseAns($index)">
+        <span> {{indexToLetter($index)}}) {{e}} yolo </span>
+
+        </ion-item>
+      </ion-list>
+
+      <div class="button-bar">
+
+        <button type="button" class="button button-positive" ng-click="goNext()" ng-show="isPas">
+          Go to next question
+        </button>
+      </div>
+  </ion-content>
+
+</ion-view>

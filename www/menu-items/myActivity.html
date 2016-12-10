@@ -2,7 +2,7 @@
 
   <ion-content>
     <form editable-form name="editableForm" onaftersave="saveAct()">
-      <ion-floating-button ng-click="newOption();editableForm.$show(); editableForm.$show()" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
+      <ion-floating-button ng-click="newOption();editableForm.$show();" has-footer="false" button-color="#33CD5F" icon="ion-plus" icon-color="#fff">
       </ion-floating-button>
     <div class="list card">
       <div class="item item-icon-left">
@@ -16,8 +16,12 @@
               e-required>{{ getAct.description || 'empty' }}</span>
       </div>
       <div class="item item-icon-left">
+        <!--<div id="map"></div>-->
         <i class="icon ion-ios-location"></i>
         Location: ((location picker)){{getEvent.location}}
+        <!--<input type="text" id="lat" readonly="yes"><br>-->
+        <!--<input type="text" id="lng" readonly="yes">-->
+
       </div>
       <div class="item item-icon-left">
         <span class="title">Proximity </span>
@@ -79,6 +83,7 @@
 
       </div>
       </form>
+    <!--<script type="text/javascript" src="js/map.js"></script>-->
   </ion-content>
 
 </ion-view>

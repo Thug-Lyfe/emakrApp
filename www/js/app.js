@@ -4,7 +4,19 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'ion-floating-menu', 'starter.controllers', 'xeditable'])
+angular.module('starter', [
+  'ionic',
+  'ion-floating-menu',
+  'xeditable',
+  'starter.controllers',
+  'myEventMod',
+  'myEventsMod',
+  'myActivityMod',
+  'previewActivityMod',
+  'previewEventMod',
+  'eventMod'
+
+])
 
 .run(function($ionicPlatform, editableOptions) {
   editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
@@ -86,6 +98,24 @@ angular.module('starter', ['ionic', 'ion-floating-menu', 'starter.controllers', 
         'menuContent': {
           templateUrl: 'menu-items/myActivity.html',
           controller: 'myActCtrl'
+        }
+      }
+    })
+    .state('app.previewActivity',{
+      url:'/previewActivity',
+      views: {
+        'menuContent': {
+          templateUrl: 'menu-items/previewActivity.html',
+          controller: 'previewActivityCtrl'
+        }
+      }
+    })
+    .state('app.previewEvent',{
+      url:'/previewEvent',
+      views: {
+        'menuContent': {
+          templateUrl: 'menu-items/previewEvent.html',
+          controller: 'previewEventCtrl'
         }
       }
     })
