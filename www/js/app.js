@@ -14,7 +14,7 @@ angular.module('starter', [
   'myActivityMod',
   'previewActivityMod',
   'previewEventMod',
-  'eventMod'
+  'eventMod '
 
 ])
 
