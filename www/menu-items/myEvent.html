@@ -50,7 +50,7 @@
     </form>
     <ion-list show-reorder="editableForm.$visible">
       <ion-item ng-repeat="act in getEvent.activities" >
-      <i class="icon ion-ios-arrow-left"></i>
+
         <ion-option-button class="button-assertive icon ion-ios-trash-outline icon-only custom-icon" ng-click="deleteAct(e.name,$index);editableForm.$show()">
         </ion-option-button>
       <ion-option-button class="button-positive icon ion-edit icon-only custom-icon" ng-click="setAct($index)" UI-SREF="app.myActivity()">
@@ -62,6 +62,7 @@
 
 
       {{act.name}}
+        <i class="icon ion-ios-arrow-left" ng-show="editableForm.$visible"></i>
         <ion-reorder-button class="ion-navicon"
                             on-reorder="moveItem(act,$fromIndex, $toIndex)">
         </ion-reorder-button>

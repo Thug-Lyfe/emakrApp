@@ -4,7 +4,7 @@
   <ion-content>
     <ion-list>
       <ion-item ng-repeat="e in getAll">
-      <i class="icon ion-ios-arrow-left"></i>
+
         <ion-option-button class="button-assertive icon ion-ios-trash-outline icon-only custom-icon" ng-click="deleteEvent(e.name,$index)">
         </ion-option-button>
         <ion-option-button class="button-positive icon ion-edit icon-only custom-icon" ng-click="setEvent($index)" UI-SREF="app.myEvent()">
@@ -13,7 +13,7 @@
         </ion-option-button>
         <ion-option-button class="button-energized icon ion-eye icon-only custom-icon" ng-click="setEvent($index);setState()" UI-SREF="app.previewEvent">
         </ion-option-button>
-
+        <i class="icon ion-ios-arrow-left"></i>
       {{e.name}}
       </ion-item>
     </ion-list>

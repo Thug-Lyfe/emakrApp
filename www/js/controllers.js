@@ -164,16 +164,27 @@ angular.module('starter.controllers', [])
 
       onLogin: function(){
         // rest call set private events (delete when rest calls implemented)
-        window.localStorage['privateEvents'] = angular.toJson(eventStashP);
+        var restGetPrivates = window.localStorage['privateEvents'];
+        if(!restGetPrivates){
+          window.localStorage['privateEvents'] = eventStashP;
+          console.log("getting your Privates")
+          restGetPrivates = eventStashP;
+        }
+
+
       },
       all: function() {
-        var restGetPublicEvents = eventStash;
-        window.localStorage['publicEvents'] = angular.toJson(restGetPublicEvents);
-        if(restGetPublicEvents) {
-          window.localStorage['publicEvents'];
-          return restGetPublicEvents;
+
+        var restGetPublicEvents = window.localStorage['publicEvents'];
+        if(!restGetPublicEvents){
+          restGetPublicEvents = eventStash;
+          window.localStorage['publicEvents'] = angular.toJson(restGetPublicEvents);
         }
-        return [];
+        else{
+          restGetPublicEvents = angular.fromJson(restGetPublicEvents);
+        }
+
+          return restGetPublicEvents;
 
       },
       getEvent: function(eventIndex){
