@@ -19,18 +19,18 @@
     </ion-header-bar>
     <ion-content class="has-footer">
       <ion-list>
-        <ion-item menu-close href="#/app/home">
-          <a class="icon-left ion-home">  Home</a>
+        <ion-item menu-close ng-href="#/app/home">
+          <span class="icon-left ion-home">  Home</span>
         </ion-item>
-        <ion-item menu-close href="#/app/events">
-          <a class="icon-left ion-folder">  Public Events</a>
+        <ion-item menu-close ng-href="#/app/events">
+          <span class="icon-left ion-folder">  Public Events</span>
         </ion-item>
-        <ion-item menu-close href="#/app/myEvents" ng-show="loggedin">
-        <a class="icon-left ion-heart">  My Events</a>
+        <ion-item menu-close ng-href="#/app/myEvents" ng-show="loggedin">
+        <span class="icon-left ion-heart">  My Events</span>
       </ion-item>
-        <ion-item menu-close href="#/app/events" >
-          <a class="icon-left ion-eye">  Join Private Event</a>
-        </ion-item>
+        <!--<ion-item menu-close href="#/app/events" >-->
+          <!--<a class="icon-left ion-eye">  Join Private Event</a>-->
+        <!--</ion-item>-->
       </ion-list>
     </ion-content>
     <ion-footer-bar align-title="center" class="bar-balanced" ng-click="login()" ng-show="!loggedin">

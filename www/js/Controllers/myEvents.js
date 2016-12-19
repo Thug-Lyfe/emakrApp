@@ -4,7 +4,9 @@
 angular.module('myEventsMod', [])
   .controller('myEventsCtrl', function($rootScope,$scope, $timeout, $ionicModal, Private, $ionicSideMenuDelegate,$ionicPopup,$ionicListDelegate) {
 
+
     $scope.getAll = Private.all();
+
     $scope.setEvent = function(index){
       Private.setLastActiveEvent(index);
     };
