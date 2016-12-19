@@ -3,7 +3,12 @@
 
   color : black !important;
 }
-
+.alignleft {
+  float: left;
+}
+.alignright {
+  float: right;
+}
 form[name="editableForm"] > div {
   height: auto;
   padding: 5px 0;
@@ -32,3 +37,4 @@ form[name="editableForm"] textarea {
 form[name="editableForm"] text {
   width: 500px;
 }
+

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.app212063" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.app212063" version="0.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>emakr</name>
   <description>
-        An Ionic Framework and Cordova project.
+        an app for making and executing events
     </description>
-  <author email="you@example.com" href="http://example.com.com/">
-      Your Name Here
+  <author email="dilligaf@lel.com" href="http://gofuckyourself.com/">
+      @thug-lyfe
     </author>
   <content src="index.html"/>
   <access origin="*"/>
