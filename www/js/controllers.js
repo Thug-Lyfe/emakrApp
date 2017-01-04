@@ -195,13 +195,6 @@ angular.module('starter.controllers', [])
         return {};
 
       },
-      getAct: function(eventIndex,actIndex){
-        var actString = window.localStorage['publicEvents'];
-        if(actString) {
-          return angular.fromJson(actString)[eventIndex].activities[actIndex];
-        }
-        return [];
-      },
 
       getLastActiveEvent: function() {
         return parseInt(window.localStorage['lastActiveEvent']) || 0;
@@ -345,45 +338,9 @@ angular.module('starter.controllers', [])
         return all;
       },
 
-      newAct: function(all,index,ActName) {
-        // Add a new event
 
-        var restCallNewAct = true
-        if(restCallNewAct){
-          all[index].activities.push({
-              name: ActName,
-              description: "",
-              location: "(locationPicker)",
-              proximity: 0,
-              type: 0
-          })
-          window.localStorage['privateEvents'] = angular.toJson(all);
-        }
-        return all[index];
-      },
-      duplicateAct: function(all,index,act){
-        var newAct = {
-          name: act.name + "(d)",
-          description: act.description,
-          location: act.location,
-          proximity: act.proximity
-        }
-        var restCallNewAct = true
-        if(restCallNewAct){
-          all[index].activities.push(newAct)
-          window.localStorage['privateEvents'] = angular.toJson(all);
-        }
-        return all[index];
-      },
-      deleteAct: function(all,eventIndex,index){
 
-        var restCallDelete = true
-        if(restCallDelete){
-          all[eventIndex].activities.splice(index,1);
-          window.localStorage['privateEvents'] = angular.toJson(all);
-        }
-        return all[eventIndex];
-      },
+
       saveAct: function(all, act, eventIndex, ActIndex){
         all[eventIndex].activities[ActIndex] = act;
         window.localStorage['privateEvents'] = angular.toJson(all);
