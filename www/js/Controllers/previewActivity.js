@@ -57,14 +57,10 @@ angular.module('previewActivityMod', [])
           $ionicHistory.goBack(-2)
         }
         else {
-          index = Preview.getLastPreviewAct()+1;
-          Preview.setLastPreviewAct(index);
+          index++;
           $scope.isPas = false
           $scope.getAct = event.activities[index];
-
-        }
-        }
-      }
+        }}}
 
       $scope.indexToLetter = function (index) {
         return String.fromCharCode(97 + index)

@@ -41,8 +41,6 @@ angular.module('myEventsMod', [])
     };
     $scope.duplicate = function(index){
       $scope.getAll = Private.duplicateEvent($scope.getAll,$scope.getAll[index]);
-
-
     }
 
     var oldSoftBack = $rootScope.$ionicGoBack;

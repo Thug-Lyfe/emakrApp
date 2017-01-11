@@ -170,8 +170,6 @@ angular.module('starter.controllers', [])
           window.localStorage['privateEvents'] = angular.toJson(eventStashP);
           console.log("getting your Privates")
         }
-
-
       },
       all: function() {
 
